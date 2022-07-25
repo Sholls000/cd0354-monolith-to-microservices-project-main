@@ -2,37 +2,40 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  labels:
+    app: frontend
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      run: frontend
-  replicas: 2
+      app: frontend
   template:
     metadata:
       labels:
-        run: frontend
+        app: frontend
     spec:
       containers:
-      - name: frontend
-        image: shollsdoc/udagram-frontend
-        ports: 
-        - containerPort: 80
-        resources:
-          limits:
-            cpu: 500m
-          requests:
-            cpu: 200m
+        - name: frontend
+          image: shollsdoc/udagram-frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+            limits:
+              cpu: "500m"
+      restartPolicy: Always
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  labels:
-    run: frontend
 spec:
-  ports:
-  - port: 80
-    protocol: TCP
   selector:
-    run: frontend
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 8100
+      targetPort: 80
