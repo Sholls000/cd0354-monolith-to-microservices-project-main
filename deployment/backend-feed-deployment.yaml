@@ -13,15 +13,15 @@ spec:
         run: backend-feed
     spec:
       containers:
-      - name: backend-feed
-        image: shollsdoc/udagram-api-feed:v3
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            cpu: "1500m"
-          requests:
-            cpu: "1000m"
+        - name: backend-feed
+          image: shollsdoc/udagram-api-feed:v3
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "900m"
+            requests:
+              cpu: "450m"
 
 ---
 apiVersion: v1
@@ -32,8 +32,8 @@ metadata:
   name: backend-feed
 spec:
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 8080
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
   selector:
     service: backend-feed
