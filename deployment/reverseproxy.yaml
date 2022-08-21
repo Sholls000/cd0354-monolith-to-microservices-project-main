@@ -2,38 +2,41 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reverseproxy
+  labels:
+    app: reverseproxy
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      run: reverseproxy
-  replicas: 2
+      app: reverseproxy
   template:
     metadata:
       labels:
-        run: reverseproxy
+        app: reverseproxy
     spec:
       containers:
         - name: reverseproxy
           image: shollsdoc/reverseproxy:v3
-          ports:
-            - containerPort: 80
+          imagePullPolicy: Always
           resources:
-            limits:
-              cpu: 1000m
             requests:
-              cpu: 500m
+              cpu: "1000m"
+            limits:
+              cpu: "1500m"
+          ports:
+            - containerPort: 8080
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    service: reverseproxy
   name: reverseproxy
+  labels:
+    app: reverseproxy
 spec:
+  selector:
+    app: reverseproxy
   ports:
-    - name: "8080"
+    - protocol: TCP
       port: 8080
       targetPort: 8080
-  selector:
-    service: reverseproxy
