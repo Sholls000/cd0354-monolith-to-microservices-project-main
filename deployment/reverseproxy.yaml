@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: reverseproxy
-          image: shollsdoc/reverseproxy:v3
+          image: shollsdoc/udagram-reverseproxy:v3
           imagePullPolicy: Always
           resources:
             requests:
